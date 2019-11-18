@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.EventSystems;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))] //обязателен компонент скрипта
@@ -21,6 +20,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //остановить движение player, если выбрана inventory panel
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         //Нажата левая кнопка мыши
         if (Input.GetMouseButtonDown(0)) 
         {

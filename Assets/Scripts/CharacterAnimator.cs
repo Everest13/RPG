@@ -19,7 +19,7 @@ public class CharacterAnimator : MonoBehaviour
     void Update()
     {
         //Установить значение speedFloat в аниматоре для выбора State в Blend.Tree (player animator)
-        float speedPersent = agent.velocity.magnitude / agent.speed; //текущая скорость / максимальн. скорость
-        animator.SetFloat("speedPersent", speedPersent, locomationAnimationSmoothTime, Time.deltaTime);
+        float speedPercent = agent.velocity.magnitude / agent.speed; //текущая скорость / максимальн. скорость
+        animator.SetFloat("speedPercent", speedPercent, locomationAnimationSmoothTime, Time.deltaTime);
     }
 }
