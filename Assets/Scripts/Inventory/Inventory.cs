@@ -43,9 +43,9 @@ public class Inventory : MonoBehaviour
             }
 
             items.Add(item);
-
-            //хз пока что здесь конкретно вызывается
-            if (OnItemChangedCallback != null) // OnItemChangedCallback?.Invoke();
+            
+            //Обновление панели инвентаря
+            if (OnItemChangedCallback != null) // ~ OnItemChangedCallback?.Invoke();
                 OnItemChangedCallback.Invoke();
         }
 

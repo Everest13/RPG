@@ -10,11 +10,22 @@ public class Item : ScriptableObject
     public Sprite icon = null;
     public bool isDefaultItem = false;
 
+    /*
+     * Click inventory slot with equipment
+     */
     public virtual void Use ()
     {
         //Use the item
         //Smth might happen
         Debug.Log("Using " + name);
+    }
+
+    /*
+     * Remove from inventory if set this on player
+     */
+    public void RemoveFromInventory ()
+    {
+        Inventory.instance.Remove(this);
     }
 
 }
