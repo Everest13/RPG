@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f001701508cc98a499cef32cfaa922a7, type: 3}
-  m_Name: Helmet of Fire
+  m_Name: Hair
   m_EditorClassIdentifier: 
-  name: Helmet of Fire
-  icon: {fileID: 21300000, guid: c6e7b8c11f08a444cb97b26b6e607cc4, type: 3}
-  isDefaultItem: 0
+  name: Hair
+  icon: {fileID: 0}
+  isDefaultItem: 1
   equipSlot: 0
-  armorModifier: 2
-  damageModifier: 1
+  mesh: {fileID: 6010390309150693912, guid: 124c70a7015cdb54687066f813238770, type: 3}
+  coveredMeshRegions: 
+  armorModifier: 0
+  damageModifier: 0

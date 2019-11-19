@@ -6,6 +6,8 @@ using UnityEngine;
 public class Equipment : Item
 {
     public EquipmentSlot equipSlot; //enum перечисления
+    public SkinnedMeshRenderer mesh;
+    public EquipmentMeshRegion[] coveredMeshRegions; // Текущие отрендеренные equipment
 
     public int armorModifier; //модификатор брони
     public int damageModifier; //модификатор урона
@@ -21,3 +23,4 @@ public class Equipment : Item
 }
 
 public enum EquipmentSlot { Head, Chest, Legs, Weapon, Shield, Feet } //перечисление всего инвентаря
+public enum EquipmentMeshRegion { Legs, Arms, Torso}; // Player Body / SkinnedMeshRender - Correspondes to BlendShapes 

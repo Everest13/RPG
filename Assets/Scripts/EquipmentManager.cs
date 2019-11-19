@@ -15,18 +15,33 @@ public class EquipmentManager : MonoBehaviour
 
     #endregion
 
-    Equipment[] currentEquipment;
+    Equipment[] currentEquipment; //Items we currenlty have equipped
+    SkinnedMeshRenderer[] currentMeshes;
+
     Inventory inventory;
 
-    public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem);
+    public Equipment[] defaultItems; //дефолтная экипировка
+    public SkinnedMeshRenderer targetMesh; //Player Body
+    public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem); // Callback for when an item is equippped/unequipped
     public OnEquipmentChanged onEquipmentChanged;
 
-    private void Start()
+    void Start()
     {
-        inventory = Inventory.instance;
+        inventory = Inventory.instance; // Reference to our inventory
 
-        int numberOfSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length; //получить длину enum массива
-        currentEquipment = new Equipment[numberOfSlots]; //сформировать массив
+        int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length; //получить длину enum массива
+        currentEquipment = new Equipment[numSlots]; //сформировать массив
+        currentMeshes = new SkinnedMeshRenderer[numSlots];
+
+        EquipDefaultItems(); //дефолтно экипироваться
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            UnequipAll();
+        }
     }
 
     /*
@@ -36,56 +51,87 @@ public class EquipmentManager : MonoBehaviour
     public void Equip (Equipment newItem)
     {
         int slotIndex = (int)newItem.equipSlot; //получить числовое значение EquipmentSlot enum
-
-        Equipment oldItem = null;
+        //снять выбр экипировку
+        Equipment oldItem = Unequip(slotIndex); ;
 
         //Переместить актуальный инвентарь на панель инвентаря, заменить на выбранный
-        if (currentEquipment[slotIndex] != null)
+        //чтот грохнуть решили
+        /*if (currentEquipment[slotIndex] != null)
         {
             oldItem = currentEquipment[slotIndex];
             inventory.Add(oldItem);
-        }
+        }*/
 
         /*if (onEquipmentChanged != null)
         {*/
         onEquipmentChanged?.Invoke(newItem, oldItem);
         //}
+        SetEquipmentBlendShapes(newItem, 100); //Set body blendship to new item equipment
 
         currentEquipment[slotIndex] = newItem; //set item in current active player equipment
+        SkinnedMeshRenderer newMesh = Instantiate<SkinnedMeshRenderer>(newItem.mesh); //получить меш из active player equipment
+        newMesh.transform.parent = targetMesh.transform;
+
+        newMesh.bones = targetMesh.bones;
+        newMesh.rootBone = targetMesh.rootBone;
+        currentMeshes[slotIndex] = newMesh;
     }
 
     /*
      * Выкинуть одну позицию в инвентарь
+     * вернуть Equipment oldItem
      */
-    public void Unequip (int slotIndex)
+    public Equipment Unequip (int slotIndex)
     {
         if (currentEquipment[slotIndex] != null)
         {
+            if (currentMeshes[slotIndex] != null)
+            {
+                Destroy(currentMeshes[slotIndex].gameObject); // Unrender old equipment
+            }
+
             Equipment oldItem = currentEquipment[slotIndex];
+            SetEquipmentBlendShapes(oldItem, 0); //come back default Body blendship
+
             inventory.Add(oldItem);
+            currentEquipment[slotIndex] = null;
 
             onEquipmentChanged?.Invoke(null, oldItem);
 
-            currentEquipment[slotIndex] = null;
+            return oldItem;
         }
+
+        return null;
     }
 
     /*
      * Выкинуть всю экипировку из активного в инвентарь
      */
-    public void UnequipAll ()
+    public void UnequipAll()
     {
         for (int i = 0; i < currentEquipment.Length; i++)
         {
             Unequip(i);
         }
+
+        EquipDefaultItems();
     }
 
-    private void Update()
+    //Установить размеры Player Body под Equipment
+    void SetEquipmentBlendShapes(Equipment item, int weight)
     {
-        if (Input.GetKeyDown(KeyCode.U))
+        foreach (EquipmentMeshRegion blendShape in item.coveredMeshRegions) //перебираем blendShape в отрендеренных equipment
         {
-            UnequipAll();
+            //подгоняем body по weight equipment
+            targetMesh.SetBlendShapeWeight((int)blendShape, weight);
+        }
+    }
+
+    void EquipDefaultItems()
+    {
+        foreach (Equipment item in defaultItems)
+        {
+            Equip(item);
         }
     }
 }
