@@ -32,7 +32,7 @@ public class PlayerMotor : MonoBehaviour
     }
 
     /*
-     * Следовать за enemy
+     * Следовать за 
      * 
      * Interactable newTarget - int-ble enemy полученный при рейкастинге
      */
@@ -45,7 +45,7 @@ public class PlayerMotor : MonoBehaviour
     }
 
     /*
-     * Прекратить следовать за enemy
+     * Прекратить следовать за 
      */
     public void StopFollowingTarget()
     {

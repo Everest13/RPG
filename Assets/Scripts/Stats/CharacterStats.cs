@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/*
+ * Статистика игрока
+ */
 public class CharacterStats : MonoBehaviour
 {
     public int maxHealth = 100;
@@ -8,12 +11,12 @@ public class CharacterStats : MonoBehaviour
     public Stat damage; //броня
     public Stat armor; //ущерб
 
-    void Awake()
+    private void Awake()
     {
         currentHealth = maxHealth;
     }
 
-    void Update()
+    private void Update()
     {
         /*if (Input.GetKeyDown(KeyCode.T))
         {
@@ -22,7 +25,8 @@ public class CharacterStats : MonoBehaviour
     }
 
     /*
-     * Нанесение урона
+     * Нанесение урона,
+     * Отнять очки здоровья
      * int damage - урон
      */
     public void TakeDamage(int damage)
@@ -31,7 +35,7 @@ public class CharacterStats : MonoBehaviour
         damage = Mathf.Clamp(damage, 0, int.MaxValue); //для возврата только положит. value
 
         currentHealth -= damage;
-        Debug.Log(transform.name + " takes" + damage + " damage");
+        Debug.Log(transform.name + " takes " + damage + " damage");
 
         if (currentHealth <= 0)
         {

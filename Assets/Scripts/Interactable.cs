@@ -16,12 +16,12 @@ public class Interactable : MonoBehaviour
     public virtual void Interacte()
     {
         //This method is mean to be overwritten
-        Debug.Log("Interracting with " + transform.name);
+        //Debug.Log("Interracting with " + transform.name);
     }
 
     private void Update()
     {
-        //если выбран объект enemy
+        //если выбран объект item/enemy
         if (isFocus && !hasInteracted)
         {
             //расстояние между enemy & player
